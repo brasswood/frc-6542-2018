@@ -17,6 +17,7 @@ public class Drive extends Subsystem {
 	private Spark left = new Spark(RobotMap.leftDrivePWM);
 	private Spark right = new Spark(RobotMap.rightDrivePWM);
 	private static Drive instance;
+	private final int kForward = 1;
 	
 	private Drive() {
 		
@@ -31,7 +32,7 @@ public class Drive extends Subsystem {
 	
 	public enum Side {
 		kLeft,
-		kRight;
+		kRight
 	}
 
     public void initDefaultCommand() {
@@ -47,5 +48,27 @@ public class Drive extends Subsystem {
     		right.set(value);
     	}
     }
+
+    /**
+     * Sets the motors of our Drive to the proper values to steer given the turn value and the linear speed.
+     * @param turn    the turn "radius" (between -1 and 1) starting from the center of the circle and ending at the
+     *                  center of the robot
+     * @param speed   the linear speed which the outer side will travel
+     */
+    public void steer (double turn, double speed) {
+		Side outer, inner;
+		if (turn < 0 && turn >= -1) {
+		    outer = Side.kRight;
+		    inner = Side.kLeft;
+		} else if (turn >= 0 && turn <= 1){
+            outer = Side.kLeft;
+            inner = Side.kRight;
+        } else return;
+
+		set(outer, speed * kForward);
+		set(inner, speed * 2*(0.5d-Math.abs(turn)) * -kForward);
+
+	}
+
 }
 
