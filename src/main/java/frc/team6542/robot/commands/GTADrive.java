@@ -14,14 +14,14 @@ import frc.team6542.robot.subsystems.*;
  */
 public class GTADrive extends PIDCommand {
 	
-	static final double p = 0;
-	static final double i = 0;
-	static final double d = 0;
+	private static final double p = 0;
+	private static final double i = 0;
+	private static final double d = 0;
 	private final Drive drive = Drive.getInstance();
 	private final ADXRS450_Gyro gyro = new ADXRS450_Gyro();
 	private PIDController cont;
-	final MyXbox xbox = MyXbox.getInstance(0);
-	double turn, speed;
+	private final MyXbox xbox = MyXbox.getInstance(0);
+	private double turn, speed;
 
     public GTADrive() {
         // Use requires() here to declare subsystem dependencies
@@ -46,6 +46,7 @@ public class GTADrive extends PIDCommand {
             drive.steer(turn, speed);
         } else if (!cont.isEnabled()) {
             cont.enable();
+            setSetpointRelative(0);
         }
     }
     // Make this return true when this Command no longer needs to run execute()
