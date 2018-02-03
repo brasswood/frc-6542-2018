@@ -30,6 +30,7 @@ public class Robot extends TimedRobot {
 	public Drive serve = Drive.getInstance();
 	Command m_autonomousCommand;
 	SendableChooser<Command> m_chooser = new SendableChooser<>();
+	SendableChooser<Boolean> test = new SendableChooser<>();
 
 	/**
 	 * This function is run when the robot is first started up and should be
@@ -41,7 +42,14 @@ public class Robot extends TimedRobot {
 		m_chooser.addDefault("Default Auto", new ExampleCommand());
 		// chooser.addObject("My Auto", new MyAutoCommand());
 		SmartDashboard.putData("Auto mode", m_chooser);
-	}
+		SmartDashboard.putNumber("P", 0);
+		SmartDashboard.putNumber("I", 0);
+        SmartDashboard.putNumber("D", 0);
+        SmartDashboard.putNumber("theta", 0);
+        test.addDefault("Don't Test", false);
+        test.addObject("Do Test", true);
+        SmartDashboard.putData("test", test);
+    }
 
 	/**
 	 * This function is called once each time the robot enters Disabled mode.
@@ -91,6 +99,7 @@ public class Robot extends TimedRobot {
 	 */
 	@Override
 	public void autonomousPeriodic() {
+        m_oi.dashboardTrigger.toggleWhenActive(new RotateToTheta(SmartDashboard.getNumber("theta", 0)));
 		Scheduler.getInstance().run();
 	}
 
@@ -118,5 +127,6 @@ public class Robot extends TimedRobot {
 	 */
 	@Override
 	public void testPeriodic() {
+
 	}
 }
