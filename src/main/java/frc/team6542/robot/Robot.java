@@ -27,6 +27,7 @@ public class Robot extends TimedRobot {
 	public static OI m_oi;
 	public static final ExampleSubsystem kExampleSubsystem
 			= new ExampleSubsystem();
+	public Drive serve = Drive.getInstance();
 	Command m_autonomousCommand;
 	SendableChooser<Command> m_chooser = new SendableChooser<>();
 

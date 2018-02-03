@@ -17,7 +17,6 @@ public class Drive extends Subsystem {
 	private Spark left = new Spark(RobotMap.leftDrivePWM);
 	private Spark right = new Spark(RobotMap.rightDrivePWM);
 	private static Drive instance;
-	private final int kForward = 1;
 	
 	private Drive() {
 		
@@ -40,7 +39,21 @@ public class Drive extends Subsystem {
         //setDefaultCommand(new MySpecialCommand());
     	setDefaultCommand(new GTADrive());
     }
-    
+    /**
+     * Sets the side of drive, and takes into account the fact that
+     * you must spin each side in opposite directions to go forward.
+     * It accomplishes this by setting the right side to the
+     * negative of the forward speed.
+     * @param s 			The side
+     * @param forwardSpeed	The speed of the side going in the forward direction
+     */
+    public void setForwardSpeed(Side s, double forwardSpeed) {
+    	if (s == Side.kLeft) {
+    		left.set(forwardSpeed);
+    	} else if (s == Side.kRight) {
+    		right.set(-forwardSpeed);
+    	}
+    }
     public void set (Side s, double value) {
     	if (s == Side.kLeft) {
     		left.set(value);
@@ -65,8 +78,8 @@ public class Drive extends Subsystem {
             inner = Side.kRight;
         } else return;
 
-		set(outer, speed * kForward);
-		set(inner, speed * 2*(0.5d-Math.abs(turn)) * -kForward);
+		setForwardSpeed(outer, speed);
+		setForwardSpeed(inner, speed * 2*(0.5d-Math.abs(turn)));
 
 	}
 
