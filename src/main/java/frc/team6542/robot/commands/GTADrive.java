@@ -3,7 +3,6 @@ package frc.team6542.robot.commands;
 import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.smartdashboard.*;
 import edu.wpi.first.wpilibj.command.PIDCommand;
-import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
 import frc.team6542.robot.*;
 import frc.team6542.robot.subsystems.*;
@@ -32,6 +31,7 @@ public class GTADrive extends PIDCommand {
         // eg. requires(chassis);
 		super("GTADrive", p, i, d);
 		requires(drive);
+		setInterruptible(true);
 		gyro.setPIDSourceType(edu.wpi.first.wpilibj.PIDSourceType.kDisplacement);
     }
 
@@ -43,8 +43,6 @@ public class GTADrive extends PIDCommand {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	SmartDashboard.putNumber("Gyro 2", gyro.pidGet());
-    	System.out.print("This command is working");
         turn = xbox.getX(Hand.kLeft);
         speed = xbox.getTriggerAxis(Hand.kRight) - xbox.getTriggerAxis(Hand.kLeft);
         SmartDashboard.putNumber("x", turn);
@@ -67,8 +65,7 @@ public class GTADrive extends PIDCommand {
 
     // Called once after isFinished returns true
     protected void end() {
-        cont.disable();
-        cont.free();
+
     }
 
     // Called when another command which requires one or more of the same
@@ -90,7 +87,6 @@ public class GTADrive extends PIDCommand {
        SmartDashboard.putNumber("Gyro", gyro.pidGet());
        SmartDashboard.putNumber("PIDOutput", output);
        if (Math.abs(turn) < steeringTolerance) {
-    	   double lOut, rOut;
            if (output > 0 && speed > 0) {
         	   drive.setForwardSpeed(Drive.Side.kRight, speed*(1 - output));
         	   drive.setForwardSpeed(Drive.Side.kLeft, speed);

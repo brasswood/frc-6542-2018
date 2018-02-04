@@ -11,9 +11,7 @@ public class MyXbox extends XboxController {
     }
 
     public static MyXbox getInstance(int port) {
-        if (instance == null) {
-            instance = new MyXbox(port);
-        }
+        if (instance == null) {instance = new MyXbox(port);}
         return instance;
     }
 }

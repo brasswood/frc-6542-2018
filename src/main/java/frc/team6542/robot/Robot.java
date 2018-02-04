@@ -13,7 +13,6 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.team6542.robot.commands.*;
-import frc.team6542.robot.subsystems.*;
 
 
 /**
@@ -25,12 +24,13 @@ import frc.team6542.robot.subsystems.*;
  */
 public class Robot extends TimedRobot {
 	public static OI m_oi;
-	public static final ExampleSubsystem kExampleSubsystem
-			= new ExampleSubsystem();
-	public Drive serve = Drive.getInstance();
-	Command m_autonomousCommand;
-	SendableChooser<Command> m_chooser = new SendableChooser<>();
-	SendableChooser<Boolean> test = new SendableChooser<>();
+	// public static final ExampleSubsystem kExampleSubsystem
+	//		= new ExampleSubsystem();
+	// Command m_autonomousCommand;
+    // SendableChooser<Command> m_chooser = new SendableChooser<>();
+	private RotateToTheta m_testCommand;
+	private GTADrive m_drive;
+	private SendableChooser<RotateToTheta> m_testToggle = new SendableChooser<>();
 
 	/**
 	 * This function is run when the robot is first started up and should be
@@ -39,16 +39,17 @@ public class Robot extends TimedRobot {
 	@Override
 	public void robotInit() {
 		m_oi = new OI();
-		m_chooser.addDefault("Default Auto", new ExampleCommand());
+		// m_chooser.addDefault("Default Auto", new ExampleCommand());
 		// chooser.addObject("My Auto", new MyAutoCommand());
-		SmartDashboard.putData("Auto mode", m_chooser);
-		SmartDashboard.putNumber("P", 0);
+		// SmartDashboard.putData("Auto mode", m_chooser);
+        m_drive = new GTADrive();
+        SmartDashboard.putNumber("P", 0);
 		SmartDashboard.putNumber("I", 0);
         SmartDashboard.putNumber("D", 0);
         SmartDashboard.putNumber("theta", 0);
-        test.addDefault("Don't Test", false);
-        test.addObject("Do Test", true);
-        SmartDashboard.putData("test", test);
+        m_testToggle.addDefault("Don't Test", null);
+        m_testToggle.addObject("Do Test", new RotateToTheta());
+        SmartDashboard.putData("test", m_testToggle);
     }
 
 	/**
@@ -58,7 +59,7 @@ public class Robot extends TimedRobot {
 	 */
 	@Override
 	public void disabledInit() {
-
+        Scheduler.getInstance().removeAll();
 	}
 
 	@Override
@@ -79,7 +80,9 @@ public class Robot extends TimedRobot {
 	 */
 	@Override
 	public void autonomousInit() {
-		m_autonomousCommand = m_chooser.getSelected();
+		// m_autonomousCommand = m_chooser.getSelected();
+        m_drive.cancel();
+        m_testCommand = m_testToggle.getSelected();
 
 		/*
 		 * String autoSelected = SmartDashboard.getString("Auto Selector",
@@ -89,9 +92,17 @@ public class Robot extends TimedRobot {
 		 */
 
 		// schedule the autonomous command (example)
-		if (m_autonomousCommand != null) {
-			m_autonomousCommand.start();
-		}
+		/*
+		 * if (m_autonomousCommand != null) {
+		 * 	m_autonomousCommand.start();
+		 * }
+		 */
+
+		if (m_testCommand != null) {
+		    System.out.println("Start test");
+		    m_testCommand.start();
+        }
+
 	}
 
 	/**
@@ -99,8 +110,7 @@ public class Robot extends TimedRobot {
 	 */
 	@Override
 	public void autonomousPeriodic() {
-        m_oi.dashboardTrigger.toggleWhenActive(new RotateToTheta(SmartDashboard.getNumber("theta", 0)));
-		Scheduler.getInstance().run();
+	    Scheduler.getInstance().run();
 	}
 
 	@Override
@@ -109,9 +119,13 @@ public class Robot extends TimedRobot {
 		// teleop starts running. If you want the autonomous to
 		// continue until interrupted by another command, remove
 		// this line or comment it out.
-		if (m_autonomousCommand != null) {
-			m_autonomousCommand.cancel();
-		}
+		/*
+		 *  if (m_autonomousCommand != null) {
+		 *	m_autonomousCommand.cancel();
+		 *  }
+		 */
+        if (m_testCommand != null){m_testCommand.cancel();}
+		m_drive.start();
 	}
 
 	/**
