@@ -21,7 +21,7 @@ public class GTADrive extends PIDCommand {
 	private static final double setpointTolerance = 1; // Satisfied if within 1 degree
 	private static final double steeringTolerance = 0.2d; // Controller doesn't always reset to 0
 	private final Drive drive = Drive.getInstance();
-	private final ADXRS450_Gyro gyro = new ADXRS450_Gyro();
+	private final MyGyro gyro = MyGyro.getInstance();
 	private PIDController cont;
 	private final MyXbox xbox = MyXbox.getInstance(0);
 	private double turn, speed;
