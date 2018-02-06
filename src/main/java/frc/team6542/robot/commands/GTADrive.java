@@ -14,9 +14,9 @@ import frc.team6542.robot.subsystems.*;
  */
 public class GTADrive extends PIDCommand {
 	
-	private static final double p = 0.01d;
-	private static final double i = 0;
-	private static final double d = 0;
+	private static final double kP = 0.01d;
+	private static final double kI = 0;
+	private static final double kD = 0;
 	private static final double setpointTolerance = 1; // Satisfied if within 1 degree
 	private static final double steeringTolerance = 0.2d; // Controller doesn't always reset to 0
 	private final Drive drive = Drive.getInstance();
@@ -29,7 +29,7 @@ public class GTADrive extends PIDCommand {
     	
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
-		super("GTADrive", p, i, d);
+		super("GTADrive", kP, kI, kD);
 		requires(drive);
 		setInterruptible(true);
 		gyro.setPIDSourceType(edu.wpi.first.wpilibj.PIDSourceType.kDisplacement);
@@ -65,14 +65,13 @@ public class GTADrive extends PIDCommand {
 
     // Called once after isFinished returns true
     protected void end() {
-
+        drive.stopMotors();
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     protected void interrupted() {
-    	drive.set(Drive.Side.kLeft, 0);
-    	drive.set(Drive.Side.kRight, 0);
+    	drive.stopMotors();
     }
 
 	@Override

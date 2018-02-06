@@ -3,7 +3,6 @@ package frc.team6542.robot.subsystems;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 import frc.team6542.robot.RobotMap;
-import frc.team6542.robot.commands.*;
 import edu.wpi.first.wpilibj.Spark;
 
 /**
@@ -80,8 +79,11 @@ public class Drive extends Subsystem {
 
 		setForwardSpeed(outer, speed);
 		setForwardSpeed(inner, speed * 2*(0.5d-Math.abs(turn)));
-
 	}
 
+	public void stopMotors () {
+        set(Side.kLeft, 0);
+        set(Side.kRight, 0);
+    }
 }
 
