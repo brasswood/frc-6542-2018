@@ -46,9 +46,9 @@ public class Robot extends TimedRobot {
 		SmartDashboard.putNumber("I", 0);
         SmartDashboard.putNumber("D", 0);
         SmartDashboard.putNumber("theta", 0);
-        m_testToggle.addDefault("Don't Test", null);
-        m_testToggle.addObject("Do Test", new RotateToTheta());
-        SmartDashboard.putData("test", m_testToggle);
+        // m_testToggle.addDefault("Don't Test", null);
+        // m_testToggle.addObject("Do Test", new RotateToTheta());
+        // SmartDashboard.putData("test", m_testToggle);
     }
 
 	/**
@@ -81,7 +81,8 @@ public class Robot extends TimedRobot {
 	public void autonomousInit() {
 		// m_autonomousCommand = m_chooser.getSelected();
         m_drive.cancel();
-        m_testCommand = m_testToggle.getSelected();
+        // m_testCommand = m_testToggle.getSelected();
+	m_testCommand = new RotateToTheta();
 
 		/*
 		 * String autoSelected = SmartDashboard.getString("Auto Selector",
@@ -97,10 +98,11 @@ public class Robot extends TimedRobot {
 		 * }
 		 */
 
-		if (m_testCommand != null) {
+		/*if (m_testCommand != null) {
 		    System.out.println("Start test");
 		    m_testCommand.start();
-        }
+        	}*/
+		m_testCommand.start();
 
 	}
 

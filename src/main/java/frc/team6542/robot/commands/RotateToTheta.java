@@ -13,7 +13,8 @@ public class RotateToTheta extends PIDCommand {
     private double kI = SmartDashboard.getNumber("I", 0);
     private double kD = SmartDashboard.getNumber("D", 0);
     private double theta = SmartDashboard.getNumber("theta", 0);
-    private static final double kPercentTolerance = 10;
+    // private static final double kPercentTolerance = 10;
+    private static final double kAbsoluteTolerance = 1;
     private MyGyro gyro = MyGyro.getInstance();
     private PIDController cont;
 
@@ -31,7 +32,8 @@ public class RotateToTheta extends PIDCommand {
         cont = getPIDController();
         cont.setPID(kP, kI, kD);
         setSetpoint(theta);
-        cont.setPercentTolerance(kPercentTolerance);
+        // cont.setPercentTolerance(kPercentTolerance);
+	cont.setAbsoluteTolerance(kAbsoluteTolerance);
 
     }
     @Override
