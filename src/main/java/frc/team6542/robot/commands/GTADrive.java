@@ -90,15 +90,20 @@ public class GTADrive extends PIDCommand {
        SmartDashboard.putNumber("Gyro", gyro.pidGet());
        SmartDashboard.putNumber("PIDOutput", output);
        if (Math.abs(turn) < steeringTolerance) {
-    	   double lOut, rOut;
            if (output > 0 && speed > 0) {
-        	   drive.setForwardSpeed(Drive.Side.kRight, speed*(1 - output));
-        	   drive.setForwardSpeed(Drive.Side.kLeft, speed);
+        	   drive.setForwardSpeed(Drive.Side.kRight, speed*(-1 - output));
+        	   drive.setForwardSpeed(Drive.Side.kLeft, speed*(-1 - output));
            } else {
-               drive.setForwardSpeed(Drive.Side.kRight, speed);
-               drive.setForwardSpeed(Drive.Side.kLeft, speed*(1 + output));
+               drive.setForwardSpeed(Drive.Side.kRight, speed*(-1 + output));
+               drive.setForwardSpeed(Drive.Side.kLeft, speed*(-1 + output));
            }
+           if (output < 0 && speed > 0) {
+        		drive.setForwardSpeed(Drive.Side.kRight, speed*(1 - output));
+        		drive.setForwardSpeed(Drive.Side.kLeft, speed*(1 - output));
+           } else {
+        		drive.setForwardSpeed(Drive.Side.kRight, speed*(1 + output));
+        		drive.setForwardSpeed(Drive.Side.kLeft, speed*(1 + output));
+        	   }
        }
 	}
-
 }
