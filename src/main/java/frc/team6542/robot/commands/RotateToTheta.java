@@ -36,6 +36,7 @@ public class RotateToTheta extends PIDCommand {
 	cont.setAbsoluteTolerance(kAbsoluteTolerance);
 
     }
+
     @Override
     protected double returnPIDInput() {
         return gyro.pidGet();
@@ -69,5 +70,4 @@ public class RotateToTheta extends PIDCommand {
         kI = SmartDashboard.getNumber("I", 0);
         kD = SmartDashboard.getNumber("D", 0);
     }
-
 }
