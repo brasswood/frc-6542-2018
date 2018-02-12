@@ -8,6 +8,9 @@
 package frc.team6542.robot;
 
 
+import edu.wpi.first.wpilibj.buttons.Button;
+import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import frc.team6542.robot.commands.TakeBox;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -41,4 +44,6 @@ public class OI {
 	// Start the command when the button is released and let it run the command
 	// until it is finished as determined by it's isFinished method.
 	// button.whenReleased(new ExampleCommand());
+    Button intake = new JoystickButton(MyXbox.getInstance(0), 0);
+    Button expel = new JoystickButton(MyXbox.getInstance(0), 1);
 }

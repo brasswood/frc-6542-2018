@@ -125,6 +125,8 @@ public class Robot extends TimedRobot {
 		 */
         if (m_testCommand != null){m_testCommand.cancel();}
 		m_drive.start();
+		m_oi.intake.whenPressed(new TakeBox());
+		m_oi.expel.whileHeld(new ExpelBox());
 	}
 
 	/**
