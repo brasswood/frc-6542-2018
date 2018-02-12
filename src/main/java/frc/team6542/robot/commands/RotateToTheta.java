@@ -1,5 +1,6 @@
 package frc.team6542.robot.commands;
 
+
 import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.command.PIDCommand;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -34,7 +35,6 @@ public class RotateToTheta extends PIDCommand {
         setSetpoint(theta);
         // cont.setPercentTolerance(kPercentTolerance);
 	cont.setAbsoluteTolerance(kAbsoluteTolerance);
-
     }
 
     @Override
@@ -71,3 +71,4 @@ public class RotateToTheta extends PIDCommand {
         kD = SmartDashboard.getNumber("D", 0);
     }
 }
+
