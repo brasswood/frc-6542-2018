@@ -44,6 +44,26 @@ public class OI {
 	// Start the command when the button is released and let it run the command
 	// until it is finished as determined by it's isFinished method.
 	// button.whenReleased(new ExampleCommand());
-    Button intake = new JoystickButton(MyXbox.getInstance(0), 0);
-    Button expel = new JoystickButton(MyXbox.getInstance(0), 1);
+
+    // Button intake = new JoystickButton(MyXbox.getInstance(0), 0);
+    // Button expel = new JoystickButton(MyXbox.getInstance(0), 1);
+
+
+    /*
+    Jakob:
+
+    The second argument of JoystickButton is the raw channel of the input. You will need to figure this number
+    out. The driver station shows you the input it receives and on what channel when you press a button.
+    Replace 0 and 1 with the numbers you find for the buttons you want to use to move the elevator up and down.
+
+    If you want to change the speed of the elevator, change the kSpeed constant in RaiseElevator.java and
+    LowerElevator.java.
+
+    The PWM ports for the two sides of the elevator are defined in RobotMap.java, under leftElevator and
+    rightElevator. Change them as needed.
+
+    -Andrew <3
+     */
+    Button raiseElevator = new JoystickButton(MyXbox.getInstance(0), 0);
+    Button lowerElevator = new JoystickButton(MyXbox.getInstance(0), 1);
 }
