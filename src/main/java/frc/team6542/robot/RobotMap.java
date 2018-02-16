@@ -31,5 +31,5 @@ public class RobotMap {
 	public static int rightIntake = 3;
 	public static int intakeSwitch = 0;
 	public static int leftElevator = 4;
-	public static int rightElevator = 5;
+	// public static int rightElevator = 5;
 }
