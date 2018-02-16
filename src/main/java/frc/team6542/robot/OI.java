@@ -45,8 +45,8 @@ public class OI {
 	// until it is finished as determined by it's isFinished method.
 	// button.whenReleased(new ExampleCommand());
 
-    // Button intake = new JoystickButton(MyXbox.getInstance(0), 0);
-    // Button expel = new JoystickButton(MyXbox.getInstance(0), 1);
+    Button intake = new JoystickButton(MyXbox.getInstance(0), 0);
+    Button expel = new JoystickButton(MyXbox.getInstance(0), 1);
 
 
     /*
@@ -61,6 +61,10 @@ public class OI {
 
     The PWM ports for the two sides of the elevator are defined in RobotMap.java, under leftElevator and
     rightElevator. Change them as needed.
+
+    Ditto all of the above for the intake system. Another warning on the intake system, it will keep spinning
+    towards the robot until it gets some analog voltage that exceeds kThreshold in Intake.java. Spinning the
+    motors away will just spin them while the button is held down.
 
     -Andrew <3
      */
