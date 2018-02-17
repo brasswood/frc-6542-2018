@@ -68,6 +68,8 @@ public class OI {
 
     -Andrew <3
      */
-    Button raiseElevator = new JoystickButton(MyXbox.getInstance(0), 0);
-    Button lowerElevator = new JoystickButton(MyXbox.getInstance(0), 1);
+    // Button raiseElevator = new JoystickButton(MyXbox.getInstance(0), 0);
+    // Button lowerElevator = new JoystickButton(MyXbox.getInstance(0), 1);
+
+    Button moveElevator = new JoystickButton(MyXbox.getInstance(0), 2);
 }

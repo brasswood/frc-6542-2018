@@ -26,7 +26,6 @@ public class RobotMap {
 	
 	public static int leftDrivePWM = 0;
 	public static int rightDrivePWM = 1;
-	public static int xboxPort = 0;
 	public static int leftIntake = 2;
 	public static int rightIntake = 3;
 	public static int intakeSwitch = 0;
