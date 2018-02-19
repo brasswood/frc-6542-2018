@@ -6,15 +6,16 @@ import frc.team6542.robot.subsystems.Intake;
 public class TakeBox extends Command {
     private Intake intake = Intake.getInstance();
     private boolean boxIsIn = false;
-    private static final double kSpeed = 0.2;
+    private static final double dir = 1;
+    private static final double kTakeSpeed = 0.2;
+    private static final double kHoldSpeed = 0.2;
 
     public TakeBox() {
         requires(intake);
     }
 
     protected void execute() {
-        boxIsIn = intake.getSwitch();
-        if (boxIsIn) {intake.set(0);} else {intake.set(kSpeed);}
+        if (boxIsIn) {intake.set(kHoldSpeed);} else {intake.set(kTakeSpeed);}
     }
 
     protected void end() {
@@ -26,7 +27,7 @@ public class TakeBox extends Command {
     }
 
     protected boolean isFinished() {
-        return boxIsIn;
+        return false;
     }
 
 }

@@ -18,11 +18,10 @@ public class GTADrive extends PIDCommand {
 	private static final double kI = 0;
 	private static final double kD = 0;
 	private static final double setpointTolerance = 1; // Satisfied if within 1 degree
-	private static final double steeringTolerance = 0.2d; // Controller doesn't always reset to 0
 	private final Drive drive = Drive.getInstance();
 	private final MyGyro gyro = MyGyro.getInstance();
 	private PIDController cont;
-	private final MyXbox xbox = MyXbox.getInstance(0);
+	private final MyXbox xbox = MyXbox.getInstance();
 	private double turn, speed;
 
     public GTADrive() {
@@ -46,16 +45,22 @@ public class GTADrive extends PIDCommand {
         turn = xbox.getX(Hand.kLeft);
         speed = xbox.getTriggerAxis(Hand.kRight) - xbox.getTriggerAxis(Hand.kLeft);
         SmartDashboard.putNumber("x", turn);
-        if (Math.abs(turn) > steeringTolerance) {
+
+        if (turn != 0) {
+
             if (cont.isEnabled()) {
                 cont.disable();
             }
+
             drive.steer(turn, speed);
+
         } else if (!cont.isEnabled()) {
+
             cont.enable();
             gyro.reset();
             setSetpoint(0);
             cont.setAbsoluteTolerance(setpointTolerance);
+
         }
     }
     // Make this return true when this Command no longer needs to run execute()
@@ -85,7 +90,7 @@ public class GTADrive extends PIDCommand {
 		// TODO Auto-generated method stub
        SmartDashboard.putNumber("Gyro", gyro.pidGet());
        SmartDashboard.putNumber("PIDOutput", output);
-       if (Math.abs(turn) < steeringTolerance) {
+       if (turn == 0) {
            if (output > 0 && speed > 0) {
         	   drive.setForwardSpeed(Drive.Side.kRight, speed*(1 - output));
         	   drive.setForwardSpeed(Drive.Side.kLeft, speed);

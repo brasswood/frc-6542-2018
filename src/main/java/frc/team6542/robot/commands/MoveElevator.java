@@ -7,7 +7,8 @@ import frc.team6542.robot.subsystems.Elevator;
 import static edu.wpi.first.wpilibj.GenericHID.Hand.*;
 
 public class MoveElevator extends Command{
-    private MyXbox xbox = MyXbox.getInstance(0);
+
+    private static final double kScale = 0.7;
 
     public MoveElevator() {
         requires(Elevator.getInstance());
@@ -17,7 +18,7 @@ public class MoveElevator extends Command{
     protected boolean isFinished() {return false;}
 
     protected void execute() {
-        Elevator.getInstance().set(xbox.getY(kLeft));
+        Elevator.getInstance().set(MyXbox.getInstance().getY(kRight) * kScale);
     }
 
     protected void end() {Elevator.getInstance().set(0);}

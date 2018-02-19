@@ -7,8 +7,9 @@ import frc.team6542.robot.subsystems.Intake;
 import static edu.wpi.first.wpilibj.GenericHID.Hand.kRight;
 
 public class ExpelBox extends Command{
+    private static double dir = -1;
     private Intake intake = Intake.getInstance();
-    private MyXbox xbox = MyXbox.getInstance(0);
+    private MyXbox xbox = MyXbox.getInstance();
 
     public ExpelBox() {
         requires(intake);
@@ -16,7 +17,7 @@ public class ExpelBox extends Command{
     }
 
     protected void execute() {
-        intake.set(Math.hypot(xbox.getX(kRight), xbox.getY(kRight)));
+        intake.set(Math.hypot(xbox.getX(kRight), xbox.getY(kRight))* dir);
     }
 
     protected void end() {

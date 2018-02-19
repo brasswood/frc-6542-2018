@@ -11,7 +11,6 @@ public class Intake extends Subsystem {
     private static Intake instance;
     private static final double kThreshold = 0;
 
-    private AnalogInput stopSwitch = new AnalogInput(intakeSwitch);
     private Spark leftMotor = new Spark(leftIntake);
     private Spark rightMotor = new Spark(rightIntake);
 
@@ -35,9 +34,6 @@ public class Intake extends Subsystem {
         set(value, value);
     }
 
-    public boolean getSwitch() {
-        return (stopSwitch.getVoltage() >= kThreshold);
-    }
     public void initDefaultCommand() {
 
     }

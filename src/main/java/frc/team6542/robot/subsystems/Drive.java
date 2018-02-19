@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 
 import frc.team6542.robot.RobotMap;
 import edu.wpi.first.wpilibj.Spark;
+import frc.team6542.robot.commands.GTADrive;
 
 /**
  *
@@ -36,7 +37,7 @@ public class Drive extends Subsystem {
     public void initDefaultCommand() {
         // Set the default command for a subsystem here.
         //setDefaultCommand(new MySpecialCommand());
-    	// setDefaultCommand(new GTADrive());
+    	setDefaultCommand(new GTADrive());
     }
     /**
      * Sets the side of drive, and takes into account the fact that

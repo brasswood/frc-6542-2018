@@ -12,6 +12,8 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.team6542.robot.commands.*;
+import frc.team6542.robot.subsystems.Drive;
+import frc.team6542.robot.subsystems.Elevator;
 
 
 /**
@@ -28,7 +30,6 @@ public class Robot extends TimedRobot {
 	// Command m_autonomousCommand;
     // SendableChooser<Command> m_chooser = new SendableChooser<>();
 	private RotateToTheta m_testCommand;
-	private GTADrive m_drive;
 	private SendableChooser<RotateToTheta> m_testToggle = new SendableChooser<>();
 
 	/**
@@ -41,7 +42,6 @@ public class Robot extends TimedRobot {
 		// m_chooser.addDefault("Default Auto", new ExampleCommand());
 		// chooser.addObject("My Auto", new MyAutoCommand());
 		// SmartDashboard.putData("Auto mode", m_chooser);
-        m_drive = new GTADrive();
         SmartDashboard.putNumber("P", 0);
 		SmartDashboard.putNumber("I", 0);
         SmartDashboard.putNumber("D", 0);
@@ -80,9 +80,10 @@ public class Robot extends TimedRobot {
 	@Override
 	public void autonomousInit() {
 		// m_autonomousCommand = m_chooser.getSelected();
-        m_drive.cancel();
+        Drive.getInstance().setDefaultCommand(null);
+        Elevator.getInstance().setDefaultCommand(null);
         // m_testCommand = m_testToggle.getSelected();
-	m_testCommand = new RotateToTheta();
+		m_testCommand = new RotateToTheta();
 
 		/*
 		 * String autoSelected = SmartDashboard.getString("Auto Selector",
@@ -126,12 +127,11 @@ public class Robot extends TimedRobot {
 		 *  }
 		 */
         if (m_testCommand != null){m_testCommand.cancel();}
-		m_drive.start();
-		// m_oi.intake.whenPressed(new TakeBox());
-		// m_oi.expel.whileHeld(new ExpelBox());
-		// m_oi.raiseElevator.whileHeld(new RaiseElevator());
-	 	// m_oi.lowerElevator.whileHeld(new LowerElevator());
-		m_oi.moveElevator.whileHeld(new MoveElevator());
+        Drive.getInstance().setDefaultCommand(new GTADrive());
+        Elevator.getInstance().setDefaultCommand(new MoveElevator());
+		m_oi.intake.whenPressed(new TakeBox());
+		m_oi.expel.whileHeld(new ExpelBox());
+
 	}
 
 	/**
