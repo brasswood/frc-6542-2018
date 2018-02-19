@@ -1,4 +1,4 @@
-package frc.team6542.robot.commands;
+package frc.team6542.robot;
 
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 

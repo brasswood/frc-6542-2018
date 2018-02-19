@@ -8,12 +8,12 @@
 package frc.team6542.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.team6542.robot.commands.*;
-import frc.team6542.robot.subsystems.*;
+import frc.team6542.robot.subsystems.Drive;
+import frc.team6542.robot.subsystems.Elevator;
 
 
 /**
@@ -25,11 +25,12 @@ import frc.team6542.robot.subsystems.*;
  */
 public class Robot extends TimedRobot {
 	public static OI m_oi;
-	public static final ExampleSubsystem kExampleSubsystem
-			= new ExampleSubsystem();
-	public Drive serve = Drive.getInstance();
-	Command m_autonomousCommand;
-	SendableChooser<Command> m_chooser = new SendableChooser<>();
+	// public static final ExampleSubsystem kExampleSubsystem
+	//		= new ExampleSubsystem();
+	// Command m_autonomousCommand;
+    // SendableChooser<Command> m_chooser = new SendableChooser<>();
+	private RotateToTheta m_testCommand;
+	private SendableChooser<RotateToTheta> m_testToggle = new SendableChooser<>();
 
 	/**
 	 * This function is run when the robot is first started up and should be
@@ -38,10 +39,17 @@ public class Robot extends TimedRobot {
 	@Override
 	public void robotInit() {
 		m_oi = new OI();
-		m_chooser.addDefault("Default Auto", new ExampleCommand());
+		// m_chooser.addDefault("Default Auto", new ExampleCommand());
 		// chooser.addObject("My Auto", new MyAutoCommand());
-		SmartDashboard.putData("Auto mode", m_chooser);
-	}
+		// SmartDashboard.putData("Auto mode", m_chooser);
+        SmartDashboard.putNumber("P", 0);
+		SmartDashboard.putNumber("I", 0);
+        SmartDashboard.putNumber("D", 0);
+        SmartDashboard.putNumber("theta", 0);
+        // m_testToggle.addDefault("Don't Test", null);
+        // m_testToggle.addObject("Do Test", new RotateToTheta());
+        // SmartDashboard.putData("test", m_testToggle);
+    }
 
 	/**
 	 * This function is called once each time the robot enters Disabled mode.
@@ -50,7 +58,7 @@ public class Robot extends TimedRobot {
 	 */
 	@Override
 	public void disabledInit() {
-
+        Scheduler.getInstance().removeAll();
 	}
 
 	@Override
@@ -71,7 +79,11 @@ public class Robot extends TimedRobot {
 	 */
 	@Override
 	public void autonomousInit() {
-		m_autonomousCommand = m_chooser.getSelected();
+		// m_autonomousCommand = m_chooser.getSelected();
+        Drive.getInstance().setDefaultCommand(null);
+        Elevator.getInstance().setDefaultCommand(null);
+        // m_testCommand = m_testToggle.getSelected();
+		m_testCommand = new RotateToTheta();
 
 		/*
 		 * String autoSelected = SmartDashboard.getString("Auto Selector",
@@ -81,9 +93,18 @@ public class Robot extends TimedRobot {
 		 */
 
 		// schedule the autonomous command (example)
-		if (m_autonomousCommand != null) {
-			m_autonomousCommand.start();
-		}
+		/*
+		 * if (m_autonomousCommand != null) {
+		 * 	m_autonomousCommand.start();
+		 * }
+		 */
+
+		/*if (m_testCommand != null) {
+		    System.out.println("Start test");
+		    m_testCommand.start();
+        	}*/
+		m_testCommand.start();
+
 	}
 
 	/**
@@ -91,7 +112,7 @@ public class Robot extends TimedRobot {
 	 */
 	@Override
 	public void autonomousPeriodic() {
-		Scheduler.getInstance().run();
+	    Scheduler.getInstance().run();
 	}
 
 	@Override
@@ -100,9 +121,17 @@ public class Robot extends TimedRobot {
 		// teleop starts running. If you want the autonomous to
 		// continue until interrupted by another command, remove
 		// this line or comment it out.
-		if (m_autonomousCommand != null) {
-			m_autonomousCommand.cancel();
-		}
+		/*
+		 *  if (m_autonomousCommand != null) {
+		 *	m_autonomousCommand.cancel();
+		 *  }
+		 */
+        if (m_testCommand != null){m_testCommand.cancel();}
+        Drive.getInstance().setDefaultCommand(new GTADrive());
+        Elevator.getInstance().setDefaultCommand(new MoveElevator());
+		m_oi.intake.whenPressed(new TakeBox());
+		m_oi.expel.whileHeld(new ExpelBox());
+
 	}
 
 	/**
@@ -118,5 +147,6 @@ public class Robot extends TimedRobot {
 	 */
 	@Override
 	public void testPeriodic() {
+
 	}
 }
