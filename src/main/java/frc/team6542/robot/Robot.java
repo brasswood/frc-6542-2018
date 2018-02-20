@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.team6542.robot.commands.*;
 import frc.team6542.robot.subsystems.Drive;
 import frc.team6542.robot.subsystems.Elevator;
+import frc.team6542.robot.subsystems.Intake;
 
 
 /**
@@ -46,6 +47,9 @@ public class Robot extends TimedRobot {
 		SmartDashboard.putNumber("I", 0);
         SmartDashboard.putNumber("D", 0);
         SmartDashboard.putNumber("theta", 0);
+        SmartDashboard.putData(Drive.getInstance());
+        SmartDashboard.putData(Elevator.getInstance());
+        SmartDashboard.putData(Intake.getInstance());
         // m_testToggle.addDefault("Don't Test", null);
         // m_testToggle.addObject("Do Test", new RotateToTheta());
         // SmartDashboard.putData("test", m_testToggle);
