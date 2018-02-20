@@ -50,6 +50,7 @@ public class Robot extends TimedRobot {
         SmartDashboard.putData(Drive.getInstance());
         SmartDashboard.putData(Elevator.getInstance());
         SmartDashboard.putData(Intake.getInstance());
+        MyGyro.getInstance().calibrate();
         // m_testToggle.addDefault("Don't Test", null);
         // m_testToggle.addObject("Do Test", new RotateToTheta());
         // SmartDashboard.putData("test", m_testToggle);
@@ -68,6 +69,7 @@ public class Robot extends TimedRobot {
 	@Override
 	public void disabledPeriodic() {
 		Scheduler.getInstance().run();
+		MyGyro.getInstance().reset();
 	}
 
 	/**

@@ -44,8 +44,8 @@ public class OI {
 	// until it is finished as determined by it's isFinished method.
 	// button.whenReleased(new ExampleCommand());
 
-    Button intake = new JoystickButton(MyXbox.getInstance(), 0);
-    Button expel = new JoystickButton(MyXbox.getInstance(), 1);
+    Button intake = new JoystickButton(MyXbox.getInstance(), 1);
+    Button expel = new JoystickButton(MyXbox.getInstance(), 2);
 
 
     /*

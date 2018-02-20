@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.smartdashboard.*;
 import edu.wpi.first.wpilibj.command.PIDCommand;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
+import edu.wpi.first.wpilibj.Timer;
 import frc.team6542.robot.*;
 import frc.team6542.robot.subsystems.*;
 
@@ -23,6 +24,8 @@ public class GTADrive extends PIDCommand {
 	private PIDController cont;
 	private final MyXbox xbox = MyXbox.getInstance();
 	private double turn, speed;
+	private double turn_prev = 0;
+	private Timer gyroTimer = new Timer();
 
     public GTADrive() {
     	
@@ -37,14 +40,14 @@ public class GTADrive extends PIDCommand {
     // Called just before this Command runs the first time
     protected void initialize() {
         cont = getPIDController();
-        gyro.calibrate();
+        gyro.reset();
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
         turn = xbox.getX(Hand.kLeft);
         speed = xbox.getTriggerAxis(Hand.kRight) - xbox.getTriggerAxis(Hand.kLeft);
-        SmartDashboard.putNumber("x", turn);
+        SmartDashboard.putNumber("turn", turn);
 
         if (turn != 0) {
 
@@ -54,14 +57,32 @@ public class GTADrive extends PIDCommand {
 
             drive.steer(turn, speed);
 
-        } else if (!cont.isEnabled()) {
+        } else {
 
-            cont.enable();
-            gyro.reset();
-            setSetpoint(0);
-            cont.setAbsoluteTolerance(setpointTolerance);
+            if (turn_prev != 0) { // If we just now got out of a turn
+
+                gyroTimer.start();
+                
+            }
+
+            if (gyroTimer.get() > 1) {
+
+                gyroTimer.stop();
+                gyroTimer.reset();
+                gyro.reset();
+                cont.enable();
+                setSetpoint(0);
+                cont.setAbsoluteTolerance(setpointTolerance);
+
+            } else {
+
+                drive.steer(turn, speed);
+
+            }
 
         }
+
+        turn_prev = turn;
     }
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
