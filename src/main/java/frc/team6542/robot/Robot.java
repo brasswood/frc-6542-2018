@@ -88,8 +88,9 @@ public class Robot extends TimedRobot {
 		// m_autonomousCommand = m_chooser.getSelected();
         Drive.getInstance().setDefaultCommand(null);
         Elevator.getInstance().setDefaultCommand(null);
+        new MovePastLine().start();
         // m_testCommand = m_testToggle.getSelected();
-		m_testCommand = new RotateToTheta();
+		// m_testCommand = new RotateToTheta();
 
 		/*
 		 * String autoSelected = SmartDashboard.getString("Auto Selector",
@@ -109,7 +110,7 @@ public class Robot extends TimedRobot {
 		    System.out.println("Start test");
 		    m_testCommand.start();
         	}*/
-		m_testCommand.start();
+		// m_testCommand.start();
 
 	}
 

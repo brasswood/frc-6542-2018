@@ -9,7 +9,7 @@ import frc.team6542.robot.commands.GTADrive;
 /**
  *
  */
-public class Drive extends Subsystem {
+public class Drive extends Subsystem{
 
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
@@ -54,6 +54,7 @@ public class Drive extends Subsystem {
     		right.set(-forwardSpeed);
     	}
     }
+
     public void set (Side s, double value) {
     	if (s == Side.kLeft) {
     		left.set(value);
