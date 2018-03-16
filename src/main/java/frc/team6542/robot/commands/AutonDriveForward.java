@@ -5,10 +5,13 @@ import edu.wpi.first.wpilibj.command.PIDCommand;
 import frc.team6542.robot.MyGyro;
 import frc.team6542.robot.subsystems.Drive;
 
-public class MovePastLine extends PIDCommand {
+public class AutonDriveForward extends PIDCommand {
 
     private boolean finished = false;
-    private Timer timer = new Timer();
+    public Timer timer = new Timer();
+    private double kSpeed;
+    private double kTime;
+    private boolean go;
 
     @Override
     protected double returnPIDInput() {
@@ -18,7 +21,7 @@ public class MovePastLine extends PIDCommand {
     @Override
     protected void usePIDOutput(double output) {
         Drive drive = Drive.getInstance();
-        final double kSpeed = 0.5;
+        System.out.println(output);
         if (!finished) {
             if (output > 0) {
                 drive.setForwardSpeed(Drive.Side.kRight, kSpeed * (-1 - output));
@@ -38,38 +41,47 @@ public class MovePastLine extends PIDCommand {
     }
 
 
-    public MovePastLine() {
+    public AutonDriveForward(double speed, double time) {
         super(GTADrive.kP, GTADrive.kI, GTADrive.kD);
         requires(Drive.getInstance());
+        this.kSpeed = speed;
+        this.kTime = time;
+
     }
 
 
     @Override
     protected void initialize() {
 
-        timer.start();
-
+        go = true;
+        finished = false;
     }
 
     @Override
     protected void execute() {
+        if (go) {
+            timer.start();
+            go = false;
+        }
 
-        final double kTime = 2;
         if (timer.get() > kTime) {
             finished = true;
             timer.stop();
+            timer.reset();
         }
 
     }
 
     @Override
     protected void end() {
-
+        timer.stop();
+        timer.reset();
     }
 
     @Override
     protected void interrupted() {
-
+        timer.stop();
+        timer.reset();
     }
 
     @Override

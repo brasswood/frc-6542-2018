@@ -46,6 +46,8 @@ public class OI {
 
     Button intake = new JoystickButton(MyXbox.getInstance(), 1);
     Button expel = new JoystickButton(MyXbox.getInstance(), 2);
+    Button raise = new JoystickButton(MyXbox.getInstance(), 3);
+    Button lower = new JoystickButton(MyXbox.getInstance(), 4);
 
 
     /*

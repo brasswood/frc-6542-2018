@@ -13,6 +13,7 @@ public class Intake extends Subsystem {
 
     private Spark leftMotor = new Spark(leftIntake);
     private Spark rightMotor = new Spark(rightIntake);
+    private Spark lower = new Spark(intakeLower);
 
     private Intake() {
         super();
@@ -31,7 +32,20 @@ public class Intake extends Subsystem {
     }
 
     public void set(double value) {
-        set(value, value);
+        System.out.println(value);
+        set(value, -value);
+    }
+
+    public void lower() {
+        lower.set(-0.3);
+    }
+
+    public void raise() {
+        lower.set(1);
+    }
+
+    public void stopLowering() {
+        lower.set(0);
     }
 
     public void initDefaultCommand() {

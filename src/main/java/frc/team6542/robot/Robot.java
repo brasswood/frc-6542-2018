@@ -8,6 +8,7 @@
 package frc.team6542.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -26,12 +27,11 @@ import frc.team6542.robot.subsystems.Intake;
  */
 public class Robot extends TimedRobot {
 	public static OI m_oi;
-	// public static final ExampleSubsystem kExampleSubsystem
-	//		= new ExampleSubsystem();
-	// Command m_autonomousCommand;
-    // SendableChooser<Command> m_chooser = new SendableChooser<>();
-	private RotateToTheta m_testCommand;
-	private SendableChooser<RotateToTheta> m_testToggle = new SendableChooser<>();
+	public Command testCommand = new RotateToTheta();
+	public static double expelSpeed, intakeSpeed, autonForwardSpeed, autonForwardTime, autonTurnSpeed, autonTurnTime,
+			autonTurnTheta;
+	Command m_autonomousCommand;
+    SendableChooser<Command> m_chooser = new SendableChooser<>();
 
 	/**
 	 * This function is run when the robot is first started up and should be
@@ -40,20 +40,36 @@ public class Robot extends TimedRobot {
 	@Override
 	public void robotInit() {
 		m_oi = new OI();
-		// m_chooser.addDefault("Default Auto", new ExampleCommand());
-		// chooser.addObject("My Auto", new MyAutoCommand());
-		// SmartDashboard.putData("Auto mode", m_chooser);
-        SmartDashboard.putNumber("P", 0);
-		SmartDashboard.putNumber("I", 0);
-        SmartDashboard.putNumber("D", 0);
-        SmartDashboard.putNumber("theta", 0);
+		MyGyro.getInstance().calibrate();
+
+		//SmartDashboard put systems data
         SmartDashboard.putData(Drive.getInstance());
         SmartDashboard.putData(Elevator.getInstance());
         SmartDashboard.putData(Intake.getInstance());
-        MyGyro.getInstance().calibrate();
-        // m_testToggle.addDefault("Don't Test", null);
-        // m_testToggle.addObject("Do Test", new RotateToTheta());
-        // SmartDashboard.putData("test", m_testToggle);
+
+		// Add SmartDashboard tweaking values
+
+		// Experimental speeds
+		SmartDashboard.putNumber("Expel Speed", 1);
+		SmartDashboard.putNumber("Intake Speed", -0.7);
+		SmartDashboard.putNumber("Hold Speed", -0.2);
+		SmartDashboard.putNumber("Auton Forward Speed", 0.5);
+		SmartDashboard.putNumber("Auton Forward Time", 2);
+		SmartDashboard.putNumber("Auton Turn Speed", 0.5);
+		SmartDashboard.putNumber("Auton Turn Time", 2);
+		SmartDashboard.putNumber("Auton Turn Theta", 45);
+
+		// PID for RotateToTheta
+		SmartDashboard.putNumber("P", 0);
+		SmartDashboard.putNumber("I", 0);
+		SmartDashboard.putNumber("D", 0);
+
+		// SmartDashboard chooser
+		m_chooser.addDefault("AutonGoForward", new AutonGoForward());
+		m_chooser.addObject("AutonGoLeft", new AutonGoLeft());
+		m_chooser.addObject("AutonGoRight", new AutonGoRight());
+		m_chooser.addObject("Test RotateToTheta", testCommand);
+		SmartDashboard.putData("Auto mode", m_chooser);
     }
 
 	/**
@@ -70,6 +86,13 @@ public class Robot extends TimedRobot {
 	public void disabledPeriodic() {
 		Scheduler.getInstance().run();
 		MyGyro.getInstance().reset();
+		expelSpeed = SmartDashboard.getNumber("Expel Speed", 1);
+		intakeSpeed = SmartDashboard.getNumber("Intake Speed", 1);
+		autonForwardSpeed = SmartDashboard.getNumber("Auton Forward Speed", 0.5);
+		autonForwardTime = SmartDashboard.getNumber("Auton Forward Time", 2);
+		autonTurnSpeed = SmartDashboard.getNumber("Auton Turn Speed", 0.5);
+		autonTurnTime = SmartDashboard.getNumber("Auton Turn Time", 2);
+		autonTurnTheta = SmartDashboard.getNumber("Auton Turn Theta", 45);
 	}
 
 	/**
@@ -85,33 +108,13 @@ public class Robot extends TimedRobot {
 	 */
 	@Override
 	public void autonomousInit() {
-		// m_autonomousCommand = m_chooser.getSelected();
+		m_autonomousCommand = m_chooser.getSelected();
         Drive.getInstance().setDefaultCommand(null);
         Elevator.getInstance().setDefaultCommand(null);
-        new MovePastLine().start();
-        // m_testCommand = m_testToggle.getSelected();
-		// m_testCommand = new RotateToTheta();
 
-		/*
-		 * String autoSelected = SmartDashboard.getString("Auto Selector",
-		 * "Default"); switch(autoSelected) { case "My Auto": autonomousCommand
-		 * = new MyAutoCommand(); break; case "Default Auto": default:
-		 * autonomousCommand = new ExampleCommand(); break; }
-		 */
-
-		// schedule the autonomous command (example)
-		/*
-		 * if (m_autonomousCommand != null) {
-		 * 	m_autonomousCommand.start();
-		 * }
-		 */
-
-		/*if (m_testCommand != null) {
-		    System.out.println("Start test");
-		    m_testCommand.start();
-        	}*/
-		// m_testCommand.start();
-
+        if (m_autonomousCommand != null) {
+		 	m_autonomousCommand.start();
+        }
 	}
 
 	/**
@@ -120,24 +123,19 @@ public class Robot extends TimedRobot {
 	@Override
 	public void autonomousPeriodic() {
 	    Scheduler.getInstance().run();
+
 	}
 
 	@Override
 	public void teleopInit() {
-		// This makes sure that the autonomous stops running when
-		// teleop starts running. If you want the autonomous to
-		// continue until interrupted by another command, remove
-		// this line or comment it out.
-		/*
-		 *  if (m_autonomousCommand != null) {
-		 *	m_autonomousCommand.cancel();
-		 *  }
-		 */
-        if (m_testCommand != null){m_testCommand.cancel();}
+
+        if (m_autonomousCommand != null){m_autonomousCommand.cancel();}
         Drive.getInstance().setDefaultCommand(new GTADrive());
         Elevator.getInstance().setDefaultCommand(new MoveElevator());
 		m_oi.intake.whenPressed(new TakeBox());
 		m_oi.expel.whileHeld(new ExpelBox());
+		m_oi.raise.whileHeld(new RaiseIntake());
+		m_oi.lower.whileHeld(new LowerIntake());
 
 	}
 

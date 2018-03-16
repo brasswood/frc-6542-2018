@@ -10,18 +10,23 @@ import frc.team6542.robot.subsystems.Drive;
 import static edu.wpi.first.wpilibj.PIDSourceType.kDisplacement;
 
 public class RotateToTheta extends PIDCommand {
-    private double kP = SmartDashboard.getNumber("P", 0);
-    private double kI = SmartDashboard.getNumber("I", 0);
-    private double kD = SmartDashboard.getNumber("D", 0);
-    private double theta = SmartDashboard.getNumber("theta", 0);
+    private double kP;
+    private double kI;
+    private double kD;
+    private double theta;
     // private static final double kPercentTolerance = 10;
     private static final double kAbsoluteTolerance = 1;
     private MyGyro gyro = MyGyro.getInstance();
     private PIDController cont;
 
-    public RotateToTheta() {
+    public RotateToTheta(double theta) {
         super(0, 0, 0);
         requires(Drive.getInstance());
+        this.theta = theta;
+    }
+
+    public RotateToTheta() {
+        this(0);
     }
 
     @Override
@@ -65,7 +70,7 @@ public class RotateToTheta extends PIDCommand {
      * Grabs the kP, kI, kD, and theta values from the SmartDashboard and sets the instance variables.
      */
     private void getTestParameters() {
-        theta = SmartDashboard.getNumber("theta", 0);
+        theta = SmartDashboard.getNumber("Auton Turn Theta", 0);
         kP = SmartDashboard.getNumber("P", 0);
         kI = SmartDashboard.getNumber("I", 0);
         kD = SmartDashboard.getNumber("D", 0);
