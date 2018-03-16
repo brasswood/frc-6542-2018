@@ -11,7 +11,6 @@ import static edu.wpi.first.wpilibj.GenericHID.Hand.kRight;
 public class ExpelBox extends Command{
     private static double dir = -1;
     // private static final double kSpeed;
-    private double speed = SmartDashboard.getNumber("Expel Speed", 1);
     private Intake intake = Intake.getInstance();
 
     public ExpelBox() {
@@ -20,7 +19,7 @@ public class ExpelBox extends Command{
     }
 
     protected void execute() {
-        intake.set(speed);
+        intake.set(SmartDashboard.getNumber("Expel Speed", 0.4));
     }
 
     protected void end() {

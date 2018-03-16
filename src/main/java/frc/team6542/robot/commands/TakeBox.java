@@ -8,7 +8,6 @@ import frc.team6542.robot.subsystems.Intake;
 
 public class TakeBox extends Command {
     private Intake intake = Intake.getInstance();
-    private boolean hold = false;
     // private boolean boxIsIn = false;
     // private static final double kTakeSpeed = 0.2;
     // private static final double kHoldSpeed = 0.2;
@@ -19,11 +18,7 @@ public class TakeBox extends Command {
     }
 
     protected void execute() {
-        hold = !MyXbox.getInstance().getAButton();
-        if (hold) {intake.set(SmartDashboard.getNumber("Hold Speed", -0.3));}
-        else {intake.set(SmartDashboard.getNumber("Intake Speed", -0.7));}
-
-
+        intake.set(SmartDashboard.getNumber("Intake Speed", -0.4));
     }
 
     protected void end() {
