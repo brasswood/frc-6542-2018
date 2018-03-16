@@ -7,6 +7,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.team6542.robot.MyGyro;
 import frc.team6542.robot.subsystems.Drive;
 
+import static frc.team6542.robot.Robot.*;
+
 import static edu.wpi.first.wpilibj.PIDSourceType.kDisplacement;
 
 public class RotateToTheta extends PIDCommand {
@@ -70,7 +72,7 @@ public class RotateToTheta extends PIDCommand {
      * Grabs the kP, kI, kD, and theta values from the SmartDashboard and sets the instance variables.
      */
     private void getTestParameters() {
-        theta = SmartDashboard.getNumber("Auton Turn Theta", 0);
+        theta = SmartDashboard.getNumber(k_autonTurnTheta, autonTurnThetaDefault);
         kP = SmartDashboard.getNumber("P", 0);
         kI = SmartDashboard.getNumber("I", 0);
         kD = SmartDashboard.getNumber("D", 0);

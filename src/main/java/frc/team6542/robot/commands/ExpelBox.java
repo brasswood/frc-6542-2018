@@ -3,14 +3,11 @@ package frc.team6542.robot.commands;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.team6542.robot.MyXbox;
-import frc.team6542.robot.Robot;
 import frc.team6542.robot.subsystems.Intake;
 
-import static edu.wpi.first.wpilibj.GenericHID.Hand.kRight;
+import static frc.team6542.robot.Robot.*;
 
 public class ExpelBox extends Command{
-    private static double dir = -1;
-    // private static final double kSpeed;
     private Intake intake = Intake.getInstance();
 
     public ExpelBox() {
@@ -19,7 +16,7 @@ public class ExpelBox extends Command{
     }
 
     protected void execute() {
-        intake.set(SmartDashboard.getNumber("Expel Speed", 0.4));
+        intake.set(SmartDashboard.getNumber(k_expelSpeed, expelSpeedDefault));
     }
 
     protected void end() {

@@ -26,12 +26,25 @@ import frc.team6542.robot.subsystems.Intake;
  * project.
  */
 public class Robot extends TimedRobot {
-	public static OI m_oi;
-	public Command testCommand = new RotateToTheta();
-	public static double expelSpeed, intakeSpeed, autonForwardSpeed, autonForwardTime, autonTurnSpeed, autonTurnTime,
-			autonTurnTheta;
-	Command m_autonomousCommand;
-    SendableChooser<Command> m_chooser = new SendableChooser<>();
+	private static OI m_oi;
+	private Command testCommand = new RotateToTheta();
+	public static final String k_expelSpeed = "Expel Speed";
+	public static final String k_intakeSpeed = "Intake Speed";
+	public static final String k_autonForwardSpeed = "Auton Forward Speed";
+	public static final String k_autonForwardTime = "Auton Forward Time";
+	public static final String k_autonTurnSpeed = "Auton Turn Speed";
+	public static final String k_autonTurnTime = "Auton Turn Time";
+	public static final String k_autonTurnTheta = "Auton Turn Theta";
+	public static final double expelSpeedDefault = 0.3;
+	public static final double intakeSpeedDefault = -0.3;
+	public static final double autonForwardSpeedDefault = 0.5;
+	public static final double autonForwardTimeDefault = 2;
+	public static final double autonTurnSpeedDefault = 0.5;
+	public static final double autonTurnTimeDefault = 2;
+	public static final double autonTurnThetaDefault = 45;
+
+	private Command m_autonomousCommand;
+    private SendableChooser<Command> m_chooser = new SendableChooser<>();
 
 	/**
 	 * This function is run when the robot is first started up and should be
@@ -50,14 +63,13 @@ public class Robot extends TimedRobot {
 		// Add SmartDashboard tweaking values
 
 		// Experimental speeds
-		SmartDashboard.putNumber("Expel Speed", 1);
-		SmartDashboard.putNumber("Intake Speed", -0.7);
-		SmartDashboard.putNumber("Hold Speed", -0.2);
-		SmartDashboard.putNumber("Auton Forward Speed", 0.5);
-		SmartDashboard.putNumber("Auton Forward Time", 2);
-		SmartDashboard.putNumber("Auton Turn Speed", 0.5);
-		SmartDashboard.putNumber("Auton Turn Time", 2);
-		SmartDashboard.putNumber("Auton Turn Theta", 45);
+		SmartDashboard.putNumber(k_expelSpeed, expelSpeedDefault);
+		SmartDashboard.putNumber(k_intakeSpeed, intakeSpeedDefault);
+		SmartDashboard.putNumber(k_autonForwardSpeed, autonForwardSpeedDefault);
+		SmartDashboard.putNumber(k_autonForwardTime, autonForwardTimeDefault);
+		SmartDashboard.putNumber(k_autonTurnSpeed, autonTurnSpeedDefault);
+		SmartDashboard.putNumber(k_autonTurnTime, autonTurnTimeDefault);
+		SmartDashboard.putNumber(k_autonTurnTheta, autonTurnThetaDefault);
 
 		// PID for RotateToTheta
 		SmartDashboard.putNumber("P", 0);
@@ -86,13 +98,6 @@ public class Robot extends TimedRobot {
 	public void disabledPeriodic() {
 		Scheduler.getInstance().run();
 		MyGyro.getInstance().reset();
-		expelSpeed = SmartDashboard.getNumber("Expel Speed", 1);
-		intakeSpeed = SmartDashboard.getNumber("Intake Speed", 1);
-		autonForwardSpeed = SmartDashboard.getNumber("Auton Forward Speed", 0.5);
-		autonForwardTime = SmartDashboard.getNumber("Auton Forward Time", 2);
-		autonTurnSpeed = SmartDashboard.getNumber("Auton Turn Speed", 0.5);
-		autonTurnTime = SmartDashboard.getNumber("Auton Turn Time", 2);
-		autonTurnTheta = SmartDashboard.getNumber("Auton Turn Theta", 45);
 	}
 
 	/**
@@ -134,8 +139,6 @@ public class Robot extends TimedRobot {
         Elevator.getInstance().setDefaultCommand(new MoveElevator());
 		m_oi.intake.whenPressed(new TakeBox());
 		m_oi.expel.whileHeld(new ExpelBox());
-		m_oi.raise.whileHeld(new RaiseIntake());
-		m_oi.lower.whileHeld(new LowerIntake());
 
 	}
 

@@ -11,7 +11,6 @@ public class AutonDriveForward extends PIDCommand {
     public Timer timer = new Timer();
     private double kSpeed;
     private double kTime;
-    private boolean go;
 
     @Override
     protected double returnPIDInput() {
@@ -52,17 +51,12 @@ public class AutonDriveForward extends PIDCommand {
 
     @Override
     protected void initialize() {
-
-        go = true;
+        timer.start();
         finished = false;
     }
 
     @Override
     protected void execute() {
-        if (go) {
-            timer.start();
-            go = false;
-        }
 
         if (timer.get() > kTime) {
             finished = true;

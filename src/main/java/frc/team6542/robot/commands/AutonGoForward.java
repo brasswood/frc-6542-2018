@@ -1,19 +1,17 @@
 package frc.team6542.robot.commands;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
-import frc.team6542.robot.Robot;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.team6542.robot.subsystems.Drive;
+
+import static frc.team6542.robot.Robot.*;
 
 public class AutonGoForward extends CommandGroup {
 
-    // public static final double kSpeed = 0.5;
-    // public static final double kTime = 2;
-    private double kSpeed = Robot.autonForwardSpeed;
-    private double kTime = Robot.autonForwardTime;
-
     public AutonGoForward() {
         requires(Drive.getInstance());
-        addSequential(new AutonDriveForward(kSpeed, kTime));
+        addSequential(new AutonDriveForward(SmartDashboard.getNumber(k_autonForwardSpeed, autonForwardSpeedDefault),
+                SmartDashboard.getNumber(k_autonForwardTime, autonForwardTimeDefault)));
     }
 
 }

@@ -1,6 +1,5 @@
 package frc.team6542.robot.subsystems;
 
-import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
@@ -9,11 +8,8 @@ import static frc.team6542.robot.RobotMap.*;
 public class Intake extends Subsystem {
 
     private static Intake instance;
-    private static final double kThreshold = 0;
 
-    private Spark leftMotor = new Spark(leftIntake);
-    private Spark rightMotor = new Spark(rightIntake);
-    private Spark lower = new Spark(intakeLower);
+    private Spark motor = new Spark(intake);
 
     private Intake() {
         super();
@@ -26,26 +22,9 @@ public class Intake extends Subsystem {
         return instance;
     }
 
-    public void set(double leftValue, double rightValue) {
-        leftMotor.set(leftValue);
-        rightMotor.set(rightValue);
-    }
-
     public void set(double value) {
         System.out.println(value);
-        set(value, -value);
-    }
-
-    public void lower() {
-        lower.set(-0.3);
-    }
-
-    public void raise() {
-        lower.set(1);
-    }
-
-    public void stopLowering() {
-        lower.set(0);
+        motor.set(value);
     }
 
     public void initDefaultCommand() {
