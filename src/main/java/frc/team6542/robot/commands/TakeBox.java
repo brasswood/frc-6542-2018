@@ -12,7 +12,7 @@ public class TakeBox extends Command {
 
     public TakeBox() {
         requires(intake);
-        setInterruptible(false);
+        setInterruptible(true);
     }
 
     protected void execute() {
@@ -30,7 +30,7 @@ public class TakeBox extends Command {
     }
 
     protected boolean isFinished() {
-        return !MyXbox.getInstance().getAButton();
+        return false;
     }
 
 }

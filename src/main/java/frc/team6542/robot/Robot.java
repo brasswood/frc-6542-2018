@@ -138,7 +138,7 @@ public class Robot extends TimedRobot {
 	public void teleopInit() {
 
         if (m_autonomousCommand != null){m_autonomousCommand.cancel();}
-		m_oi.intake.whileHeld(new TakeBox());
+		m_oi.intake.whenPressed(new TakeBox());
 		m_oi.expel.whileHeld(new ExpelBox());
 
 	}
