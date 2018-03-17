@@ -30,6 +30,6 @@ public class ExpelBox extends Command{
     }
 
     protected boolean isFinished() {
-        return !MyXbox.getInstance().getBButton();
+        return !MyXbox.getInstance().getAButton();
     }
 }
