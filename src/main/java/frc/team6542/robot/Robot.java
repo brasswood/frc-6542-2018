@@ -38,8 +38,8 @@ public class Robot extends TimedRobot {
 	public static final String k_autonTurnSpeed = "Auton Turn Speed";
 	public static final String k_autonTurnTime = "Auton Turn Time";
 	public static final String k_autonTurnTheta = "Auton Turn Theta";
-	public static final double expelSpeedDefault = 1;
-	public static final double intakeSpeedDefault = -1;
+	public static final double expelSpeedDefault = -1;
+	public static final double intakeSpeedDefault = 1;
 	public static final double autonForwardSpeedDefault = 0.5;
 	public static final double autonForwardTimeDefault = 3;
 	public static final double autonTurnSpeedDefault = 0.5;
