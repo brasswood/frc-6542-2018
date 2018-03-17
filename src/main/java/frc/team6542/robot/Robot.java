@@ -7,6 +7,8 @@
 
 package frc.team6542.robot;
 
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -28,6 +30,7 @@ import frc.team6542.robot.subsystems.Intake;
 public class Robot extends TimedRobot {
 	private static OI m_oi;
 	private Command testCommand = new RotateToTheta();
+	public static NetworkTable table = NetworkTableInstance.getDefault().getTable("SmartDashboard");
 	public static final String k_expelSpeed = "Expel Speed";
 	public static final String k_intakeSpeed = "Intake Speed";
 	public static final String k_autonForwardSpeed = "Auton Forward Speed";
@@ -35,10 +38,10 @@ public class Robot extends TimedRobot {
 	public static final String k_autonTurnSpeed = "Auton Turn Speed";
 	public static final String k_autonTurnTime = "Auton Turn Time";
 	public static final String k_autonTurnTheta = "Auton Turn Theta";
-	public static final double expelSpeedDefault = 0.3;
-	public static final double intakeSpeedDefault = -0.3;
+	public static final double expelSpeedDefault = 1;
+	public static final double intakeSpeedDefault = -1;
 	public static final double autonForwardSpeedDefault = 0.5;
-	public static final double autonForwardTimeDefault = 2;
+	public static final double autonForwardTimeDefault = 3;
 	public static final double autonTurnSpeedDefault = 0.5;
 	public static final double autonTurnTimeDefault = 2;
 	public static final double autonTurnThetaDefault = 45;
@@ -59,12 +62,14 @@ public class Robot extends TimedRobot {
         SmartDashboard.putData(Drive.getInstance());
         SmartDashboard.putData(Elevator.getInstance());
         SmartDashboard.putData(Intake.getInstance());
+        SmartDashboard.putData(Scheduler.getInstance());
+
 
 		// Add SmartDashboard tweaking values
 
 		// Experimental speeds
-		SmartDashboard.putNumber(k_expelSpeed, expelSpeedDefault);
-		SmartDashboard.putNumber(k_intakeSpeed, intakeSpeedDefault);
+		// SmartDashboard.putNumber(k_expelSpeed, expelSpeedDefault);
+		// SmartDashboard.putNumber(k_intakeSpeed, intakeSpeedDefault);
 		SmartDashboard.putNumber(k_autonForwardSpeed, autonForwardSpeedDefault);
 		SmartDashboard.putNumber(k_autonForwardTime, autonForwardTimeDefault);
 		SmartDashboard.putNumber(k_autonTurnSpeed, autonTurnSpeedDefault);
@@ -74,7 +79,7 @@ public class Robot extends TimedRobot {
 		// PID for RotateToTheta
 		SmartDashboard.putNumber("P", 0);
 		SmartDashboard.putNumber("I", 0);
-		SmartDashboard.putNumber("D", 0);
+		// SmartDashboard.putNumber("D", 0);
 
 		// SmartDashboard chooser
 		m_chooser.addDefault("AutonGoForward", new AutonGoForward());
@@ -114,8 +119,6 @@ public class Robot extends TimedRobot {
 	@Override
 	public void autonomousInit() {
 		m_autonomousCommand = m_chooser.getSelected();
-        Drive.getInstance().setDefaultCommand(null);
-        Elevator.getInstance().setDefaultCommand(null);
 
         if (m_autonomousCommand != null) {
 		 	m_autonomousCommand.start();
@@ -135,9 +138,7 @@ public class Robot extends TimedRobot {
 	public void teleopInit() {
 
         if (m_autonomousCommand != null){m_autonomousCommand.cancel();}
-        Drive.getInstance().setDefaultCommand(new GTADrive());
-        Elevator.getInstance().setDefaultCommand(new MoveElevator());
-		m_oi.intake.whenPressed(new TakeBox());
+		m_oi.intake.whileHeld(new TakeBox());
 		m_oi.expel.whileHeld(new ExpelBox());
 
 	}

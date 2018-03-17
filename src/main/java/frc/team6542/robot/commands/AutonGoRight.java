@@ -9,7 +9,7 @@ import static frc.team6542.robot.Robot.*;
 public class AutonGoRight extends CommandGroup{
 
     public AutonGoRight() {
-        requires(Drive.getInstance());
+        // requires(Drive.getInstance());
         addSequential(new RotateToTheta(SmartDashboard.getNumber(k_autonTurnTheta, autonTurnThetaDefault)));
         addSequential(new AutonDriveForward(SmartDashboard.getNumber(k_autonTurnSpeed, autonTurnSpeedDefault),
                 SmartDashboard.getNumber(k_autonTurnTime, autonTurnTimeDefault)));

@@ -1,5 +1,6 @@
 package frc.team6542.robot.commands;
 
+import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.*;
 import edu.wpi.first.wpilibj.command.PIDCommand;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
@@ -12,7 +13,7 @@ import frc.team6542.robot.subsystems.*;
  * gyroscope as a PID source to calculate the motor output needed to keep the robot straight. Then it will output to
  * the Drive subsystem.
  */
-public class GTADrive extends PIDCommand {
+public class GTADrive extends Command {
 	
 	protected static final double kP = 0.01d;
 	protected static final double kI = 0;
@@ -21,28 +22,28 @@ public class GTADrive extends PIDCommand {
     private static final double kFineness = 0.3;
     private boolean fineControls = false;
 	private final Drive drive = Drive.getInstance();
-	private final MyGyro gyro = MyGyro.getInstance();
+	// private final MyGyro gyro = MyGyro.getInstance();
 	private final MyXbox xbox = MyXbox.getInstance();
 	private double turn, speed;
-	private double turn_prev = 0;
-	private boolean usePID = true;
-	private Timer gyroTimer = new Timer();
+	// private double turn_prev = 0;
+	// private boolean usePID = true;
+	// private Timer gyroTimer = new Timer();
 
     public GTADrive() {
     	
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
-		super("GTADrive", kP, kI, kD);
+		// super("GTADrive", kP, kI, kD);
 		requires(drive);
 		setInterruptible(true);
-		gyro.setPIDSourceType(edu.wpi.first.wpilibj.PIDSourceType.kDisplacement);
+		// gyro.setPIDSourceType(edu.wpi.first.wpilibj.PIDSourceType.kDisplacement);
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
-        gyro.reset();
-        setSetpoint(0);
-        getPIDController().setAbsoluteTolerance(setpointTolerance);
+        // gyro.reset();
+        // setSetpoint(0);
+        // getPIDController().setAbsoluteTolerance(setpointTolerance);
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -50,7 +51,9 @@ public class GTADrive extends PIDCommand {
         turn = xbox.getX(Hand.kLeft);
         speed = xbox.getTriggerAxis(Hand.kRight) - xbox.getTriggerAxis(Hand.kLeft);
         SmartDashboard.putNumber("turn", turn);
+        drive.steer(turn, speed);
 
+        /*
         if (speed == 0) {
             gyro.reset();
         } else if (turn != 0) {
@@ -68,6 +71,7 @@ public class GTADrive extends PIDCommand {
         }
 
         turn_prev = turn;
+        */
 
         fineControls = (xbox.getStartButtonPressed() != fineControls);
     }
@@ -87,17 +91,21 @@ public class GTADrive extends PIDCommand {
     	drive.stopMotors();
     }
 
+    /*
 	@Override
 	protected double returnPIDInput() {
 		// TODO Auto-generated method stub
 		return gyro.pidGet();
 	}
 
+    */
+
+    /*
 	@Override
 	protected void usePIDOutput(double output) {
 		// TODO Auto-generated method stub
        SmartDashboard.putNumber("Gyro", gyro.pidGet());
-       SmartDashboard.putNumber("PIDOutput", output);
+       SmartDashboard.putNumber("Compensate", gyro.pidGet() - getPIDController().getSetpoint());
        double s = fineControls ? (kFineness * speed) : speed;
        if (usePID) {
            if (output > 0 && s > 0) {
@@ -118,5 +126,6 @@ public class GTADrive extends PIDCommand {
            drive.steer(turn, s);
        }
 	}
+	*/
 
 }

@@ -2,6 +2,7 @@ package frc.team6542.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.team6542.robot.MyXbox;
 import frc.team6542.robot.subsystems.Intake;
 
 import static frc.team6542.robot.Robot.*;
@@ -11,7 +12,7 @@ public class TakeBox extends Command {
 
     public TakeBox() {
         requires(intake);
-        setInterruptible(true);
+        setInterruptible(false);
     }
 
     protected void execute() {
@@ -29,7 +30,7 @@ public class TakeBox extends Command {
     }
 
     protected boolean isFinished() {
-        return false;
+        return !MyXbox.getInstance().getAButton();
     }
 
 }

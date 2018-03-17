@@ -2,6 +2,8 @@ package frc.team6542.robot.subsystems;
 
 import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.team6542.robot.Robot;
 
 import static frc.team6542.robot.RobotMap.*;
 
@@ -25,11 +27,13 @@ public class Intake extends Subsystem {
     public void set(double value) {
         System.out.println(value);
         motor.set(value);
+        Robot.table.getSubTable("Intake").getEntry("Motor").setDouble(value);
     }
 
     public void initDefaultCommand() {
 
     }
+
 
 
 }

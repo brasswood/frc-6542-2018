@@ -9,7 +9,7 @@ import static frc.team6542.robot.Robot.*;
 public class AutonGoForward extends CommandGroup {
 
     public AutonGoForward() {
-        requires(Drive.getInstance());
+        // requires(Drive.getInstance());
         addSequential(new AutonDriveForward(SmartDashboard.getNumber(k_autonForwardSpeed, autonForwardSpeedDefault),
                 SmartDashboard.getNumber(k_autonForwardTime, autonForwardTimeDefault)));
     }

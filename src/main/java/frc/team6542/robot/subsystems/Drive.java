@@ -2,6 +2,8 @@ package frc.team6542.robot.subsystems;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.team6542.robot.Robot;
 import frc.team6542.robot.RobotMap;
 import edu.wpi.first.wpilibj.Spark;
 import frc.team6542.robot.commands.GTADrive;
@@ -17,7 +19,8 @@ public class Drive extends Subsystem{
 	private Spark left = new Spark(RobotMap.leftDrivePWM);
 	private Spark right = new Spark(RobotMap.rightDrivePWM);
 	private static Drive instance;
-	
+	private final double max_speed = 0.75;
+
 	private Drive() {
 		
 	}
@@ -49,17 +52,20 @@ public class Drive extends Subsystem{
      */
     public void setForwardSpeed(Side s, double forwardSpeed) {
     	if (s == Side.kLeft) {
-    		left.set(forwardSpeed);
+    		set(Side.kLeft, forwardSpeed);
     	} else if (s == Side.kRight) {
-    		right.set(-forwardSpeed);
+    		set(Side.kRight, -forwardSpeed);
     	}
     }
 
     public void set (Side s, double value) {
+    	double o = value < max_speed ? value : max_speed;
     	if (s == Side.kLeft) {
-    		left.set(value);
+    		left.set(o);
+    		Robot.table.getSubTable("Intake").getEntry("Left Side").setDouble(o);
     	} else if (s == Side.kRight) {
-    		right.set(value);
+    		right.set(o);
+    		Robot.table.getSubTable("Intake").getEntry("Right Side").setDouble(o);
     	}
     }
 

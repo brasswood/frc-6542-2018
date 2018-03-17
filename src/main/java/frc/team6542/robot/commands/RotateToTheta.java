@@ -73,8 +73,8 @@ public class RotateToTheta extends PIDCommand {
      */
     private void getTestParameters() {
         theta = SmartDashboard.getNumber(k_autonTurnTheta, autonTurnThetaDefault);
-        kP = SmartDashboard.getNumber("P", 0);
-        kI = SmartDashboard.getNumber("I", 0);
+        kP = SmartDashboard.getNumber("P", 0.2);
+        kI = SmartDashboard.getNumber("I", 0.013);
         kD = SmartDashboard.getNumber("D", 0);
     }
 }
