@@ -9,17 +9,19 @@ import frc.team6542.robot.subsystems.Drive;
 public class AutonDriveForward extends PIDCommand {
 
     private boolean finished = false;
-    public Timer timer = new Timer();
+    private Timer timer = new Timer();
     private double kSpeed;
     private double kTime;
 
     public AutonDriveForward(double speed, double time) {
         super(GTADrive.kP, GTADrive.kI, GTADrive.kD);
         requires(Drive.getInstance());
+        MyGyro.getInstance().setPIDSourceType(edu.wpi.first.wpilibj.PIDSourceType.kDisplacement);
         this.kSpeed = speed;
         this.kTime = time;
 
     }
+
     @Override
     protected double returnPIDInput() {
         return MyGyro.getInstance().pidGet();
@@ -51,6 +53,9 @@ public class AutonDriveForward extends PIDCommand {
 
     @Override
     protected void initialize() {
+        MyGyro.getInstance().reset();
+        getPIDController().setAbsoluteTolerance(GTADrive.setpointTolerance);
+        setSetpoint(0);
         timer.start();
         finished = false;
     }
