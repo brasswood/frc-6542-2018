@@ -8,8 +8,10 @@
 package frc.team6542.robot;
 
 
+import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import frc.team6542.robot.hid.MyXbox;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -44,10 +46,9 @@ public class OI {
 	// until it is finished as determined by it's isFinished method.
 	// button.whenReleased(new ExampleCommand());
 
-    Button intake = new JoystickButton(MyXbox.getInstance(), 2);
+    Button intake = new JoystickButton((GenericHID) Robot.controller, Robot.controller.getExpelChannel());
     Button expel = new JoystickButton(MyXbox.getInstance(), 1);
-    Button raise = new JoystickButton(MyXbox.getInstance(), 3);
-    Button lower = new JoystickButton(MyXbox.getInstance(), 4);
+
 
 
     /*

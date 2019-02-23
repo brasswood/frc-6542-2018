@@ -2,7 +2,6 @@ package frc.team6542.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.team6542.robot.MyXbox;
 import frc.team6542.robot.subsystems.Intake;
 
 import static frc.team6542.robot.Robot.*;

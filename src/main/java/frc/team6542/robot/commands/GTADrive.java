@@ -2,11 +2,9 @@ package frc.team6542.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.*;
-import edu.wpi.first.wpilibj.command.PIDCommand;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
-import edu.wpi.first.wpilibj.Timer;
-import frc.team6542.robot.*;
 import frc.team6542.robot.subsystems.*;
+import frc.team6542.robot.hid.MyXbox;
 
 /**
  * This is the command that runs by default to drive the robot. It will take input from the controller, and use the

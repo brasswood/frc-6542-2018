@@ -1,5 +1,6 @@
 package frc.team6542.robot.subsystems;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -7,6 +8,8 @@ import frc.team6542.robot.Robot;
 import frc.team6542.robot.RobotMap;
 import edu.wpi.first.wpilibj.Spark;
 import frc.team6542.robot.commands.GTADrive;
+import frc.team6542.robot.commands.WiiBoardDrive;
+import frc.team6542.robot.commands.WiiNunchuckDrive;
 
 /**
  *
@@ -40,7 +43,14 @@ public class Drive extends Subsystem{
     public void initDefaultCommand() {
         // Set the default command for a subsystem here.
         //setDefaultCommand(new MySpecialCommand());
-    	setDefaultCommand(new GTADrive());
+		String name = DriverStation.getInstance().getJoystickName(0);
+    	if (name.equals("Xbox")) {
+    		setDefaultCommand(new GTADrive());
+		} else if (name.equals("Wii Board")) {
+    		setDefaultCommand(new WiiBoardDrive());
+		} else if (name.equals("Wii Nunchuck")) {
+    		setDefaultCommand(new WiiNunchuckDrive());
+		}
     }
     /**
      * Sets the side of drive, and takes into account the fact that

@@ -9,15 +9,18 @@ package frc.team6542.robot;
 
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.team6542.robot.commands.*;
+import frc.team6542.robot.hid.MyXbox;
 import frc.team6542.robot.subsystems.Drive;
 import frc.team6542.robot.subsystems.Elevator;
 import frc.team6542.robot.subsystems.Intake;
+import frc.team6542.robot.hid.*;
 
 
 /**
@@ -45,6 +48,7 @@ public class Robot extends TimedRobot {
 	public static final double autonTurnSpeedDefault = 0.5;
 	public static final double autonTurnTimeDefault = 2;
 	public static final double autonTurnThetaDefault = 45;
+	public static MyHID controller;
 
 	private Command m_autonomousCommand;
     private SendableChooser<Command> m_chooser = new SendableChooser<>();
@@ -87,6 +91,22 @@ public class Robot extends TimedRobot {
 		m_chooser.addObject("AutonGoRight", new AutonGoRight());
 		m_chooser.addObject("Test RotateToTheta", testCommand);
 		SmartDashboard.putData("Auto mode", m_chooser);
+
+		// Get the type of controller
+		try {
+			String name = DriverStation.getInstance().getJoystickName(0);
+			if (name.equals("Xbox")) {
+				controller = MyXbox.getInstance();
+			} else if (name.equals("Wii Board")) {
+				controller = WiiBoard.getInstance();
+			} else if (name.equals("Wii Nunchuck")) {
+				controller = WiiNunchuck.getInstance();
+			} else {
+				throw new NullControllerException();
+			}
+		} catch (NullControllerException e) {
+			e.printStackTrace();
+		}
     }
 
 	/**
@@ -138,6 +158,9 @@ public class Robot extends TimedRobot {
 	public void teleopInit() {
 
         if (m_autonomousCommand != null){m_autonomousCommand.cancel();}
+        if (DriverStation.getInstance().getJoystickName(0).equals("Xbox Controller")) {
+
+		}
 		m_oi.intake.whenPressed(new TakeBox());
 		m_oi.expel.whileHeld(new ExpelBox());
 
